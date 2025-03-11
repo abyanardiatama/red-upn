@@ -102,7 +102,7 @@
                             {{ $order->zip }}
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <a href="http://wa.me/{{ $order->phone }}" class="hover:underline hover:text-blue-800">{{ $order->phone }}</a>
+                            <a href="http://wa.me/0{{ $order->phone }}" class="hover:underline hover:text-blue-800">{{ $order->phone }}</a>
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $order->payment_method }}
