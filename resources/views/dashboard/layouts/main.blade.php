@@ -8,7 +8,26 @@
     {{-- icon --}}
     <link rel="icon" type="image/png" href="/red-logo-nobg.png" />
     {{-- title --}}
-    <title>Dashboard Page</title>
+    @if (request()->is('dashboard'))
+        <title>Dashboard Page</title>
+    @elseif (request()->is('dashboard/about'))
+        <title>About Page</title>
+    @elseif (request()->is('dashboard/articles'))
+        <title>Articles Page</title>
+    @elseif (request()->is('dashboard/categories'))
+        <title>Category Article Page</title>
+    @elseif (request()->is('dashboard/members'))
+        <title>Members Page</title>
+    @elseif (request()->is('dashboard/users'))
+        <title>Users Page</title>
+    @elseif (request()->is('dashboard/events'))
+        <title>Events Page</title>
+    @elseif (request()->is('dashboard/carousels'))
+        <title>Carousels Page</title>
+    @elseif (request()->is('dashboard/orders'))
+        <title>Merchandise Orders Page</title>
+    
+    @endif
     {{-- poppins font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

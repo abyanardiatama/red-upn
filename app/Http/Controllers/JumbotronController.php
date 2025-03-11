@@ -34,24 +34,26 @@ class JumbotronController extends Controller
      */
     public function store(StoreJumbotronRequest $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'image' => 'required|image|file|max:5120' // max 1MB
-        ]);
-        // if ($request->file('image')) {
-        //     $validatedData['image'] = $request->file('image')->store('jumbotron-images', 'public');
-        // }
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/jumbotron-images', $imageName);
-            $validatedData['image'] = $imageName;
-        }
-
         try {
+            $validatedData = $request->validate([
+                'title' => 'required|max:255',
+                'image' => 'required|image|file|max:5120' // max 1MB
+            ]);
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/jumbotron-images', $imageName);
+                $validatedData['image'] = $imageName;
+            }
             Jumbotron::create($validatedData);
             // return redirect()->route('carousels.index')->with('success', 'Carousel created successfully.');
             return redirect('/dashboard/carousels')->with('success', 'Carousel added successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to add carousel. Please check your input.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'An error occurred while creating the carousel.');
         }
@@ -99,6 +101,12 @@ class JumbotronController extends Controller
             }
             $carousel->update($validatedData);
             return redirect('/dashboard/carousels')->with('success', 'Carousel updated successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to update carousel. Please check your input.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'An error occurred while updating the carousel.');
         }

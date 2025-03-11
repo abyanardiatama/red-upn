@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -102,11 +103,24 @@ class UserController extends Controller
             $rules = [
                 'name' => 'required|max:255',
                 'email' => 'required|email:dns|unique:users,email,' . $user->id, 
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|min:200|max:5120'
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|min:200|max:5120',
+                'current_password' => 'nullable',
+                'password' => 'nullable',
             ];
             
-            $validatedData['password'] = $user->password;
             $validatedData = $request->validate($rules);
+            // Cek apakah user ingin mengganti password
+            if (!empty($request->current_password)) {
+                if (!Hash::check($request->current_password, $user->password)) {
+                    return redirect()->back()->with('error', 'Password lama tidak sesuai.')->withInput();
+                }
+
+                // Simpan password baru
+                $validatedData['password'] = Hash::make($request->password);
+            } else {
+                // Jangan update password jika kosong
+                unset($validatedData['password']);
+            }
     
             if ($request->hasFile('image')) {
                 // Delete old image
@@ -125,6 +139,12 @@ class UserController extends Controller
             }
             $user->update($validatedData);
             return redirect('/dashboard/users')->with('success', 'User updated successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to update user. Please check your input.');
         } catch (\Exception $e) {
             return redirect()
                 ->back()

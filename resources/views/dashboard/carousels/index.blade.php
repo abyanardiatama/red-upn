@@ -57,6 +57,9 @@
                     <th scope="col" class="px-6 py-3">
                         Name
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                        Image
+                    </th>
                     <th scope="col" class="px-6 py-3 text-center">
                         Action
                     </th>
@@ -70,6 +73,9 @@
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $carousel->title }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <img src="{{ file_exists(public_path('storage/jumbotron-images/' . $carousel->image)) ? asset('storage/jumbotron-images/' . $carousel->image) : $carousel->image }}" alt="image" class="rounded-full w-12 h-12">
                         </th>
                         <td class="px-6 py-4 flex justify-center">
                             <div class="inline-flex rounded-md shadow-sm" role="group">

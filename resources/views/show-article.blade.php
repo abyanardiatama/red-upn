@@ -8,7 +8,8 @@
             </svg>
             Back to Articles
         </a>
-        <img src="{{ file_exists(public_path('storage/article_images/' . $article->image)) ? asset('storage/article_images/' . $article->image) : $article->image }}" alt="{{ $article->title }}" alt="{{ $article->title }}" class="h-96 object-cover mb-2">
+        <h2 class="text-3xl font-extrabold dark:text-white">{{ $article->title }}</h2>
+        <img src="{{ file_exists(public_path('storage/article_images/' . $article->image)) ? asset('storage/article_images/' . $article->image) : $article->image }}" alt="{{ $article->title }}" alt="{{ $article->title }}" class="h-96 object-cover my-4">
         <div class="flex mt-1">
             <div class="mr-3 flex">
                 <svg class="w-4 h-4 mr-2 text-gray-500" data-slot="icon" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

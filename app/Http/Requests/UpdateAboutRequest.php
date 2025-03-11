@@ -2,16 +2,22 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateMemberRequest extends FormRequest
+class UpdateAboutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        if (Auth::check()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -22,7 +28,9 @@ class UpdateMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'vision' => 'required|string',
+            'mission' => 'required|string',
         ];
     }
 }

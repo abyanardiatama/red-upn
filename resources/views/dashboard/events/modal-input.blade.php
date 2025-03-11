@@ -20,16 +20,25 @@
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Category Name" required="">
+                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Event Name">
+                        @error('name')
+                            <div class="text-red-500 text-sm mt-3">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-span-2">
                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                        <textarea id="description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Event Description"></textarea>                    
+                        <textarea id="description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Event Description"></textarea>
+                        @error('description')
+                            <div class="text-red-500 text-sm mt-3">{{ $message }}</div>
+                        @enderror                    
                     </div>
                     <div class="col-span-2">
                         <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Image</label>
                         <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" aria-describedby="image" name="image" id="image" type="file">
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="image">JPEG, PNG, JPG (MIN. 1920x1080px & 1MB).</p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="image">JPEG, PNG, JPG (RECOMMENDED RATIO 4:5 & MAX:5MB).</p>
+                        @error('image')
+                            <div class="text-red-500 text-sm mt-3">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <button type="submit" class="w-full text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Create<button>

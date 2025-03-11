@@ -48,8 +48,13 @@ class EventController extends Controller
                 $validatedData['image'] = $imageName;
             }
             Event::create($validatedData);
-            // return redirect()->route('events.index')->with('success', 'Event created successfully.');
             return redirect('/dashboard/events')->with('success', 'Event created successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to add event. Please check your input.');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'An error occurred while creating the event.');
         }
@@ -103,8 +108,13 @@ class EventController extends Controller
             // Update the event with the validated data
             $event->update($validatedData);
             return redirect('/dashboard/events')->with('success', 'Event updated successfully');
-        }
-        catch(\Exception $e){
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to update event. Please check your input.');
+        }catch(\Exception $e){
             return back()->withInput()->with('error', 'An error occurred while updating the event.');
         }
     }

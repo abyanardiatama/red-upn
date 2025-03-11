@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = DB::table('categories')->paginate(5);
+        $categories = Category::paginate(7);
         return view('dashboard.category.index', [
             'categories' => $categories,
         ]);
@@ -35,19 +35,34 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-        ]);
-        $slug = Str::slug($validatedData['name']);
-        $count = Category::where('slug', $slug)->count();
-
-        if($count > 0){
-            $slug = $slug . '-' . ($count+1);
+        try {
+            //code...
+            $validatedData = $request->validate([
+                'name' => 'required|max:255',
+                'slug' => 'unique:categories,slug',
+            ]);
+            $slug = Str::slug($validatedData['name']);
+            $count = Category::where('slug', $slug)->count();
+    
+            if($count > 0){
+                $slug = $slug . '-' . ($count+1);
+            }
+            
+            $validatedData['slug'] = $slug;
+            Category::create($validatedData);
+            return redirect('/dashboard/categories')->with('success', 'Category added succesfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to add category. Please check your input.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'An error occurred while adding the category.');
         }
-        
-        $validatedData['slug'] = $slug;
-        Category::create($validatedData);
-        return redirect('/dashboard/categories')->with('success', 'Category added succesfully');
     }
 
     /**
@@ -71,28 +86,43 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-        ]);
-        
-        // Generate the base slug
-        $slug = Str::slug($validatedData['name']);
-        
-        // Check if slug exists and it's not the current category
-        $count = Category::where('slug', $slug)
-                        ->where('id', '!=', $category->id)
-                        ->count();
-        
-        // If slug exists, append number
-        if($count > 0) {
-            $slug = $slug . '-' . ($count + 1);
+        try {
+            //code...
+            $validatedData = $request->validate([
+                'name' => 'required|max:255',
+                'slug' => 'unique:categories,slug',
+            ]);
+            
+            // Generate the base slug
+            $slug = Str::slug($validatedData['name']);
+            
+            // Check if slug exists and it's not the current category
+            $count = Category::where('slug', $slug)
+                            ->where('id', '!=', $category->id)
+                            ->count();
+            
+            // If slug exists, append number
+            if($count > 0) {
+                $slug = $slug . '-' . ($count + 1);
+            }
+            
+            $validatedData['slug'] = $slug;
+            
+            Category::where('id', $category->id)->update($validatedData);
+            
+            return redirect('/dashboard/categories')->with('success', 'Category updated successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to update category. Please check your input.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'An error occurred while updating the category.');
         }
-        
-        $validatedData['slug'] = $slug;
-        
-        Category::where('id', $category->id)->update($validatedData);
-        
-        return redirect('/dashboard/categories')->with('success', 'Category updated successfully');
     }
 
     /**

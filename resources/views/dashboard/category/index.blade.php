@@ -57,6 +57,9 @@
                     <th scope="col" class="px-6 py-3">
                         Name
                     </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Total Articles
+                    </th>
                     <th scope="col" class="px-6 py-3 flex justify-center">
                         ACTION
                     </th>
@@ -70,6 +73,9 @@
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $category->name }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                            {{ $category->articles->count() }}
                         </th>
                         <td class="px-6 py-4 flex justify-center">
                             <div class="inline-flex rounded-md shadow-sm" role="group">

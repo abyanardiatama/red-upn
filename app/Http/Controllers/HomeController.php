@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\About;
 use Illuminate\Http\Request;
 use App\Models\Jumbotron;
 use App\Models\Article;
@@ -34,8 +35,22 @@ class HomeController extends Controller
 
     public function articles() : View
     {
+        $articles = Article::latest()->paginate(9);
+        // foreach($articles as $article){
+        //     // Ambil semua paragraf dari body
+        //     preg_match_all('/<p>(.*?)<\/p>/s', $article->body, $matches);
+            
+        //     // Filter paragraf yang tidak kosong
+        //     $paragraphs = collect($matches[1])
+        //         ->map(fn($p) => trim(str_replace("\xc2\xa0", ' ', html_entity_decode(strip_tags($p)))))
+        //         ->filter(fn($p) => !empty($p)) // Hapus yang benar-benar kosong
+        //         ->values();
+
+        //     // Set excerpt dari paragraf pertama yang valid
+        //     $article->excerpt = $paragraphs->first() ?? '';
+        // }
         return view('articles',[
-            'articles' => Article::paginate(9),
+            'articles' => $articles,
         ]);
     }
     public function showArticle($slug)
@@ -60,9 +75,11 @@ class HomeController extends Controller
 
     public function about()
     {
+        $about = About::find(1);
         $members = Member::all();
         return view('about',[
-            'members' => $members
+            'members' => $members,
+            'about' => $about
         ]);
     }
 
@@ -81,9 +98,9 @@ class HomeController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|max:255',
                 'address' => 'required|max:255',
-                'zip' => 'required|max:7',
-                'phone' => 'required|max:15',
-                'quantity' => 'required|numeric|min:1',
+                'zip' => 'required||integer|max:7',
+                'phone' => 'required|integer|max:15',
+                'quantity' => 'required|integer|min:1',
                 'payment_method' => 'required',
                 'image' => 'required|mimes:jpeg,jpg,png|max:2048',
             ]);
@@ -95,9 +112,17 @@ class HomeController extends Controller
     
             MerchOrder::create($validatedData);
             return redirect('/merchandises')->with('success', 'Order added successfully');
-        }
-        catch(\Exception $e){
-            return redirect('/merchandises')->with('error', 'Order failed to add');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to add order. Please check your input.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'An unexpected error occurred. Please try again.');
         }
     }
 }

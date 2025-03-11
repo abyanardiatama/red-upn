@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MemberSeeder::class);
         $this->call(MerchandiseSeeder::class);
         $this->call(MerchOrderSeeder::class);
+        $this->call(AboutSeeder::class);
         Article::factory(10)->create();
 
         User::factory()->create([

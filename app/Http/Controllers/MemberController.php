@@ -94,7 +94,7 @@ class MemberController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'jabatan' => 'required|string|max:255',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'image' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
             ]);
             if ($request->hasFile('image')) {
                 // Delete old image
@@ -108,7 +108,7 @@ class MemberController extends Controller
                 $image->storeAs('public/member_images', $imageName);
                 $validatedData['image'] = $imageName;
             }
-    
+
             $member->update($validatedData);
             return redirect('/dashboard/members')->with('success', 'Member updated successfully');
     

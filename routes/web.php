@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Middleware\RedirectedIfNotAuthenticated;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JumbotronController;
-use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\MerchOrderController;
+use App\Http\Controllers\MerchandiseController;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\RedirectedIfNotAuthenticated;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', [HomeController::class, 'index']);
@@ -57,7 +58,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/dashboard/articles', ArticleController::class);
     Route::post('/dashboard/articles/upload', [ArticleController::class, 'upload'])->name('ckeditor.upload');
     Route::post('/dashboard/articles/delete-image', [ArticleController::class, 'deleteImage'])->name('ckeditor.delete-image');
-
+    Route::get('/dashboard/about', [AboutController::class, 'edit']);
+    Route::put('/dashboard/about', [AboutController::class, 'update']);
     Route::resource('/dashboard/categories', CategoryController::class);
     Route::resource('/dashboard/events', EventController::class);
     Route::resource('/dashboard/members', MemberController::class);

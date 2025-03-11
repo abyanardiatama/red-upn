@@ -15,12 +15,13 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                 </svg>
             </a> --}}
-            <img src="https://loremflickr.com/1216/219/organization" class="h-72 rounded-lg object-cover" alt="">
+            {{-- <img src="https://loremflickr.com/1216/219/organization" class="h-72 rounded-lg object-cover" alt=""> --}}
+            <img src="{{ file_exists(public_path('/storage/about_image/' . $about->image)) ? asset('storage/about_image/' . $about->image) : $about->image }}" alt="{{ $about->image }}" class="h-72 w-fit rounded-lg object-cover" alt="">
         </div>
         <div class="grid md:grid-cols-1 gap-8">
             <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
                 <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-secondary from-1% via-primary via-5% to-black to-5% mb-2">Visi</h2>
-                <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Mewujudkan RED sebagai wadah pengembangan diri mahasiswa Ekonomi Pembangunan dalam penelitian dengan dimaknai sikap jujur, berbudi luhur, kebangsaan, dan pantang menyerah.</p>
+                <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">{{ $about->vision }}</p>
                 {{-- <a href="#" class="text-blue-600 dark:text-blueunderline font-medium text-lg inline-flex items-center">Read more
                     <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
@@ -31,11 +32,10 @@
                 <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-secondary from-1% via-primary via-5% to-black to-5%">Misi</h2>
                 <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">
                     <ul class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">
-                        <li>1. Menumbuhkan jiwa menjunjung tinggi penelitian anggota RED melalui pembuatan karya-karya di bidang kepenulisan.</li>
-                        <li>2. Memelihara dan meningkatkan hubungan baik antara RED dengan Himpunan serta selalu berkolaborasi dalam penelitian dan pengembangan mahasiswa Ekonomi Pembangunan.</li>
-                        <li>3. Meningkatkan kualitas sumber daya anggota RED melalui berbagai penelitian kepenulisan.</li>
-                        <li>4. Selalu aktif serta dalam berbagai lomba dan kompetisi di bidang kepenulisan demi menciptakan mahasiswa Ekonomi Pembangunan yang berprestasi.</li>
-                        <li>5. Mempertajam wawasan, pola pikir, dan pandangan anggota RED melalui berbagai diskusi rutin.</li>
+                        @foreach(explode("\n", $about->mission) as $mission)
+                            <li>{{ $mission }}</li>
+                        @endforeach
+
                     </ul>
                 </p>
                 {{-- <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read more

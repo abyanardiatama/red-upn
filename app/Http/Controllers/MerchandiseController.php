@@ -36,7 +36,7 @@ class MerchandiseController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'required|string|max:255',
-                'price' => 'required',
+                'price' => 'required|integer|min:100',
                 'image' => 'required|image|mimes:jpeg,png,jpg|min:200|max:5120',
                 'status' => 'required|boolean',
                 'status_active' => 'required|boolean',
@@ -53,14 +53,14 @@ class MerchandiseController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()
                 ->back()
-                ->withErrors($e->errors());
-                // ->withInput()
-                // ->with('error', 'Failed to add merchandise. Please check your input.');
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to add merchandise. Please check your input.');
         } catch (\Exception $e) {
             return redirect()
-                ->back();
-                // ->withInput()
-                // ->with('error', 'An unexpected error occurred. Please try again.');
+                ->back()
+                ->withInput()
+                ->with('error', 'An unexpected error occurred. Please try again.');
         }
     }
 
@@ -89,7 +89,7 @@ class MerchandiseController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'required|string|max:255',
-                'price' => 'required|integer',
+                'price' => 'required|integer|min:100',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg|min:200|max:5120',
                 'status' => 'required|boolean',
                 'status_active' => 'required|boolean',
@@ -112,8 +112,9 @@ class MerchandiseController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()
                 ->back()
-                ->withErrors('error', $e->errors())
-                ->withInput();
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Failed to update merchandise data. Please check your input.');;
         } catch (\Exception $e) {
             return redirect()
                 ->back()
