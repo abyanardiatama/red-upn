@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Jumbotron;
 use App\Models\Merchandise;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -35,7 +36,7 @@ class DatabaseSeeder extends Seeder
         
         User::create([
             'name' => 'Budi',
-            'email' => 'budi@mail.com',
+            'password' => Hash::make('password'),
             'password' => bcrypt('password'),
             'image' => 'https://loremflickr.com/1080/1080/john',
         ]);
