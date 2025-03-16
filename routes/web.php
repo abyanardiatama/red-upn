@@ -15,6 +15,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JumbotronController;
 use App\Http\Controllers\MerchOrderController;
 use App\Http\Controllers\MerchandiseController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\RedirectedIfNotAuthenticated;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -60,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/articles/delete-image', [ArticleController::class, 'deleteImage'])->name('ckeditor.delete-image');
     Route::get('/dashboard/about', [AboutController::class, 'edit']);
     Route::put('/dashboard/about', [AboutController::class, 'update']);
+    Route::get('/dashboard/payment', [PaymentController::class, 'edit']);
+    Route::put('/dashboard/payment', [PaymentController::class, 'update']);
     Route::resource('/dashboard/categories', CategoryController::class);
     Route::resource('/dashboard/events', EventController::class);
     Route::resource('/dashboard/members', MemberController::class);

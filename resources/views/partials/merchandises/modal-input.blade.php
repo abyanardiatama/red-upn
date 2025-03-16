@@ -65,29 +65,33 @@
                     <div class="col-span-2">
                         <label for="payment_method" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
                         <select id="payment_method" name="payment_method" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected="">Select Payment Method</option>
+                            {{-- <option selected="">Select Payment Method</option>
                             <option value="Cash">Cash</option>
                             <option value="Transfer">Transfer</option>
                             <option value="Credit Card">Credit Card</option>
                             <option value="Paypal">Paypal</option>
                             <option value="OVO">OVO</option>
                             <option value="Gopay">Gopay</option>
-                            <option value="Dana">Dana</option>
+                            <option value="Dana">Dana</option> --}}
+                            @foreach ($method as $key => $account)
+                                <option value="{{ $key }}">{{ ucfirst($key) }}</option>
+                            @endforeach
 
+                            {{-- @foreach ($method as $method => $account)
+                                <option value="{{ $method }}">{{ ucfirst($method) }}</option>
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="image">QRIS</label>
                         <div class="flex">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=450x450&data=Example" alt="QRIS" class="w-48 rounded-lg">
+                            <img src="{{ file_exists(public_path('/storage/payment_image/' . $payment->barcode)) ? asset('storage/payment_image/' . $payment->barcode) : $payment->barcode }}" alt="{{ $payment->barcode }}" alt="{{ $payment->barcode }}" class="w-48 h-48 object-cover mb-2">
                             <ul class="px-8 list-disc">
                                 Metode Pembayaran Alternatif
-                                <li>BCA : 1234567890 (Admin)</li>
-                                <li>BNI : 1234567890 (Admin)</li>
-                                <li>BRI : 1234567890 (Admin)</li>
-                                <li>Mandiri : 1234567890 (Admin)</li>
-                                <li>DANA : 1234567890 (Admin)</li>
-                                <li>Gopay : 1234567890 (Admin)</li>
+                                @foreach ($method as $key => $number)
+                                    <li>{{ $key }} : {{ $number }}</li>
+                                @endforeach
+
                             </ul>
                             </ul>
                         </div>
@@ -101,7 +105,7 @@
                         @enderror
                     </div>
                 </div>
-                <button type="submit" class="w-full text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Create<button>
+                <button type="submit" class="w-full text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Submit<button>
             </form>
         </div>
     </div>
