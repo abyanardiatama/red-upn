@@ -58,11 +58,11 @@ class PaymentController extends Controller
         try {
             $payment = Payment::first();
             $validated = $request->validated();
-            if ($request->hasFile('image')) {
+            if ($request->hasFile('barcode')) {
                 if ($payment->barcode) {
                     Storage::delete('public/payment_image/' . $payment->barcode);
                 }
-                $image = $request->file('image');
+                $image = $request->file('barcode');
                 $image_name = time() . '.' . $image->extension();
                 $image->storeAs('public/payment_image', $image_name);
                 $validated['barcode'] = $image_name;
