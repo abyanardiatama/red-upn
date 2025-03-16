@@ -75,7 +75,6 @@ class AboutController extends Controller
             return redirect("/dashboard/about")->with('success', 'About updated successfully');
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th);
             // return redirect("/dashboard/about")->with('error', 'About failed to update');
             return redirect("/dashboard/about")->with('error', $th->getMessage());
         }

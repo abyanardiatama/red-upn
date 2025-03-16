@@ -11,6 +11,7 @@ use App\Models\Event;
 use App\Models\Member;
 use App\Models\Merchandise;
 use App\Models\MerchOrder;
+use App\Models\Payment;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 
@@ -86,8 +87,22 @@ class HomeController extends Controller
     public function merchandises()
     {
         $merchs = Merchandise::where('status_active', 1)->paginate(6);
+        $payment = Payment::first();
+        $paymentArray = [];
+        if ($payment && !empty($payment->payment_method)) {
+            foreach (explode("\n", $payment->payment_method) as $line) {
+                $line = trim($line);
+                if (strpos($line, '=>') !== false) {
+                    [$key, $value] = explode("=>", $line);
+                    $paymentArray[trim($key)] = trim($value);
+                }
+            }
+        }
+        // dd($paymentArray);
         return view('merchandises',[
-            'merchs' => $merchs
+            'merchs' => $merchs,
+            'method' => $paymentArray,
+            'payment' => $payment,
         ]);
     }
     public function orderMerch(Request $request)
@@ -98,8 +113,8 @@ class HomeController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|max:255',
                 'address' => 'required|max:255',
-                'zip' => 'required||integer|max:7',
-                'phone' => 'required|integer|max:15',
+                'zip' => 'required||digits_between:4,7',
+                'phone' => 'required|digits_between:10,15',
                 'quantity' => 'required|integer|min:1',
                 'payment_method' => 'required',
                 'image' => 'required|mimes:jpeg,jpg,png|max:2048',
